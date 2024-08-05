@@ -1,0 +1,16 @@
+JavaScript
+
+number
+string
+boolean
+null
+undefined
+object
+
+TypeScript
+
+any
+unknown
+never
+enum
+tuple
