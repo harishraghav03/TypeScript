@@ -66,3 +66,38 @@ function calculateTax (income :number, taxNumber = 2022) : number {
 // If you want to pass only 1 arg, use ?, but if we don't pass the args by default it is undefined Compilation error
 // To tackle this we use or operator, but there will be different appraoch
 // We give the default value in the parameter itself
+
+// Objects
+
+// let employee = { id: 1 };
+// In JS, objects are dynamic 
+// employee.name = 'Harish'; // Valid in JS, but invalid in TS (Compilation Error)
+// To tackle this we should annotate
+
+// let employee: { // Even if we annotate we have a compilation error, name is missing
+//     id: number,
+//     name: string
+// } = { id: 1, name: 'Harish' };
+// employee.name = 'Harish'; No need this line, but we can change the id of an employee
+// We can make it optional or initialize in the object
+// Conceptually it doesn't make sense, without name any employee?
+// We should write code that is conceptually make sense
+// If you don't want to change the value explicitly Eg employee.id = 3; we can prefix with readonly keyword
+// readonly id : number
+
+// Methods in the object
+// We should specify how many panrameters it's gonna have, type of the parameters and return type
+
+let employee: {
+    readonly id: number,
+    name: string,
+    retire: (date: Date) => void
+} = { 
+    id: 1, 
+    name: 'Harish',
+    retire: (date: Date) => {
+        console.log(date);
+    }
+ };
+
+
