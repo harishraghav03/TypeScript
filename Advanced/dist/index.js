@@ -37,6 +37,15 @@ let textBox = {
     drag: () => { },
     resize: () => { }
 };
-// Literal Types
-// Sometimes we can limit the value we wanna ssign to a variable
-let quantity = 100;
+let quantity = 50;
+// Nullable Types
+// By default, TS is very strict about using null and undefined values
+function greet(name) {
+    if (name)
+        console.log(name.toUpperCase());
+    else
+        console.log('Holla');
+}
+greet(null); //  We cannot pass null Value
+// If we give null or undefined in JS, it is totally valid
+// StrictNullChecks, by default is is enabled in strict mode

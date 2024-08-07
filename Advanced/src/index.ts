@@ -71,7 +71,73 @@ let textBox : UIWidget = {
 
 // Literal Types
 
-// Sometimes we can limit the value we wanna ssign to a variable
+// Sometimes we can limit the value we wanna assign to a variable
 
-let quantity = 100;
+// let quantity = 100;
+// If we annotate this with the number, it may be any valid value, tot limit the value we use literal
+// Literal (exact, specific)
+// let quantity: 50 = 52;  // Error
 
+// let quantity: 50 | 100 = 50; // We don't wanna hard code this
+
+type Quantity = 50 | 100; // 50 | 100; -> Literal Type, it can also be strings
+let quantity: Quantity = 50;
+
+type Metric = 'cm' | 'inch';
+
+// Nullable Types
+
+// By default, TS is very strict about using null and undefined values
+
+function greet(name: string | null | undefined){ // If we use union the error will be gone
+    if (name)
+        console.log(name.toUpperCase());
+    else
+        console.log('Holla');
+}
+
+greet(null); //  We cannot pass null Value
+// If we give null or undefined in JS, it is totally valid
+// StrictNullChecks, by default is is enabled in strict mode
+
+// Optional Chaining
+
+// When we work with nullable objects we have to do null checks
+
+type Customer = {
+    birthday?: Date
+};
+
+function getCustomer(id: number): Customer | null | undefined {
+    return id === 0 ? null : { birthday: new Date() }; 
+}
+
+let customer  = getCustomer(0); // undefined
+// if (customer !== null && customer != undefined) We can use optional instead
+    // console.log(customer?.birthday); // CE, customer may be null, so put conditional statements or Optional 
+// ?. -> Optional Property access operator
+    console.log(customer?.birthday?.getFullYear());
+
+// Optional element access operator -> Useful (Arrays)
+
+// customer?.[0]
+
+// Optional call operator
+
+let log: any = null;
+
+log?.('a'); // It gonna crash if it is null
+// The above call function will be executed only if log is referencing an actual function, otherwise undefined.
+
+// Nullish Coaelscing Operator
+
+// When we are working with null and undefined value sometimes we wanna fallback to the default value
+
+let speed: number | null = null; // We assume that the user didn't gave any value
+let ride = {
+    // speed: speed || 30
+    // What if the user gave 0 as input which is falsy and executes 30, the below is better way
+    // speed: speed !== null ? speed : 30 // In TS, we have better way
+    // Nullish Coaelscing Operator
+    speed: speed ?? 30
+}
