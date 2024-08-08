@@ -103,18 +103,51 @@ true
 
 // Access Control Keywords
 
+// class Account {
+
+//     readonly id: number; // Public by-default
+//     owner: string;
+//     private _balance: number; // Accessible only inside the class, Private -> only for writing robust code
+//     nickname?: string; // Optional
+
+//     constructor(id: number, owner: string, balance: number){
+//         this.id = id;
+//         this.owner = owner;
+//         this._balance = balance;
+//     }
+
+//     private calculateTax() {
+//     }
+
+//     getBalance(): number {
+//         return this._balance;
+//     }
+
+//     deposit(amount: number): void {
+//         if (amount <= 0)
+//             throw new Error('Invalid Amount');
+//         // Record Transactions 
+//         this._balance += amount;
+//     }
+// }
+
+// let account = new Account(1, 'Harish', 10_00_000);
+// // There is problem with this implementation
+// // account.balance = -1; // We can directly update and also we don't have the record
+// console.log(account.getBalance());
+// /* Access Modifiers -> Public, Private and Protected */
+
+// Parameter Properties
+
 class Account {
 
-    readonly id: number; // Public by-default
-    owner: string;
-    private _balance: number; // Accessible only inside the class, Private -> only for writing robust code
-    nickname?: string; // Optional
+    nickname?: string;
 
-    constructor(id: number, owner: string, balance: number){
-        this.id = id;
-        this.owner = owner;
-        this._balance = balance;
-    }
+    constructor(
+        public readonly id: number, 
+        public owner: string, 
+        private _balance: number){ // This tells the compiler to create a property name and initialize at onego
+    } // These are called parameter properties
 
     private calculateTax() {
     }
@@ -132,7 +165,5 @@ class Account {
 }
 
 let account = new Account(1, 'Harish', 10_00_000);
-// There is problem with this implementation
-// account.balance = -1; // We can directly update and also we don't have the record
-console.log(account.getBalance());
-/* Access Modifiers -> Public, Private and Protected */
+
+
