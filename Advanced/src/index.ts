@@ -141,3 +141,62 @@ let ride = {
     // Nullish Coaelscing Operator
     speed: speed ?? 30
 }
+
+// Type Assertions
+
+// Sometimes we know more about the type of the object in TS
+// JS, Getting refernce of that element in this page
+// let phone = document.getElementById('phone');
+// HTMLElement is a class in JS that represents any kind of HTML elements (Base or parent class) for other elements
+// HTMLInputElement -> These elements have extra property called value (Value entered by the user)
+// phone.value We cannot see the value entered by the user
+// Solution: Type Assertion
+// let phone = document.getElementById('phone') as HTMLInputElement; // Now we can see the value
+// We are telling the compiler we know more about this object
+// We we didn't define the type assertion and try to access the value it raises an error
+// No type conversion is happening under the hood
+// Another syntax
+let phone = <HTMLInputElement> document.getElementById('phone');
+
+//Unknown Type
+
+let x: any;
+// We have a situation where we use any when converting JS to TS
+
+// function render(document: any){
+//     document.move();
+//     document.kick();
+//     // There is no typechecking done and if we run our application it will crash, no methods defined in the document object
+// }
+
+// function render(document: unknown){
+//         document.move();
+//         document.kick();
+// } // When we change to unknown we have a compilation error (Document object of type unknown)
+// This is where we us type narrowing -> using if and type checking
+// Better to use unknown, compiler forces us to do typechecking
+
+// Never Type -> Values that never occur
+
+// Function that never retuns
+function reject(message: string) {
+    throw new Error(message);
+}
+
+function processEvents(): never{
+    // Process bunch of events and watching the message queue to execute the nxt event
+    // Infinite loop
+    while(true){
+        // Read a message from a queue
+    }
+}
+
+// processEvents();
+// console.log("Hello Buddy"); // This line will never gets executed because the function never returns (infinite loop)
+// Now we annotate this function with never to tell the comiler this function never returns and the log line is grayed out
+// allowUnreachableCode -> false
+
+reject('Hello');
+console.log("Hello Buddy");
+// But here, by default the return type is void and of we annotate with this never, the log line will not execute
+// We don't use that often
