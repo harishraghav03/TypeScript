@@ -507,3 +507,27 @@ We only have bunch of methods declarations, In this case, it is better to use in
 But if we have a logic that child classes usese, we should go for abstract classes
 */ 
 
+/*
+ Interfaces vs Types
+ In TypeScript, interfaces and type aliases can be used interchangeably. 
+Both can be used to describe the shape of an object:
+ Interface
+ interface Person { 
+name: string; 
+} 
+let person: Person = { 
+name: 'Mosh', 
+}; 
+Type
+ type Person = { 
+name: string; 
+}; 
+let person: Person = { 
+name: ‘Mosh', 
+}; 
+A class can also implement an interface or a type alias: 
+class MyCalendar extends MyInterface {}  
+class MyCalendar extends MyType {}  
+It’s more conventional to use an interface in front of the extends keyword, though.
+*/
+
