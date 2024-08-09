@@ -297,6 +297,98 @@ ride.start();
 
 // Methods Overriding
 
+// class Person {
+//     constructor(public firstName: string, public lastName: string) {}
+
+//     get fullName() {
+//         return this.firstName + ' ' + this.lastName;
+//     }
+
+//     walk() {
+//         console.log('Let\'s Walk');
+//     }
+// }
+
+// class Student extends Person{
+//     constructor(public studentId: number, firstName: string, lastName: string) {
+//         super(firstName, lastName);
+//     }
+
+//     takeTest() {
+//         console.log("Test Yep!");
+        
+//     }
+// }
+
+// class Teacher extends Person {
+
+//     override get fullName() { // We can get the output without override method, but it will be disconnected the one defined in the base class (Problem).
+//         // NoImplicitOverride
+//         // return 'Professor' + this.firstName + ' ' + this.lastName;
+//         return 'Professor ' + super.fullName;
+
+//     }
+// }
+
+// let teacher = new Teacher('Harish', 'Raghav');
+// console.log(teacher.fullName);
+
+// Polymorphism
+
+// class Person {
+//     constructor(public firstName: string, public lastName: string) {}
+
+//     get fullName() {
+//         return this.firstName + ' ' + this.lastName;
+//     }
+
+//     walk() {
+//         console.log('Let\'s Walk');
+//     }
+// }
+
+// class Student extends Person{
+//     constructor(public studentId: number, firstName: string, lastName: string) {
+//         super(firstName, lastName);
+//     }
+
+//     takeTest() {
+//         console.log("Test Yep!");
+        
+//     }
+// }
+
+// class Teacher extends Person {
+
+//     override get fullName() {
+//         return 'Professor ' + super.fullName;
+//     }
+// }
+
+// class Principle extends Person {
+
+//     override get fullName() {
+//         return 'Principle ' + super.fullName;
+//     }
+// }
+
+// printNames([
+//     new Student(1, 'John', 'Smith'),
+//     new Teacher('Harish', 'Raghav'),
+//     new Principle('Hello', 'Thani')
+// ])
+
+// function printNames(people: Person[]) {
+//     for (let person of people) 
+//         console.log(person.fullName);
+// }
+
+/* 
+Open Close Principle
+Classes should be open for extension and closed for modification */
+
+// Private vs Protected Members
+
 class Person {
     constructor(public firstName: string, public lastName: string) {}
 
@@ -304,7 +396,8 @@ class Person {
         return this.firstName + ' ' + this.lastName;
     }
 
-    walk() {
+    protected walk() { // We should know when we are using protected, it can cause coupling
+        // Just stick to public and private
         console.log('Let\'s Walk');
     }
 }
@@ -315,6 +408,7 @@ class Student extends Person{
     }
 
     takeTest() {
+        this.walk();
         console.log("Test Yep!");
         
     }
@@ -322,13 +416,94 @@ class Student extends Person{
 
 class Teacher extends Person {
 
-    override get fullName() { // We can get the output without override method, but it will be disconnected the one defined in the base class (Problem).
-        // NoImplicitOverride
-        // return 'Professor' + this.firstName + ' ' + this.lastName;
+    override get fullName() {
         return 'Professor ' + super.fullName;
-
     }
 }
 
-let teacher = new Teacher('Harish', 'Raghav');
-console.log(teacher.fullName);
+class Principle extends Person {
+
+    override get fullName() {
+        return 'Principle ' + super.fullName;
+    }
+}
+
+printNames([
+    new Student(1, 'John', 'Smith'),
+    new Teacher('Harish', 'Raghav'),
+    new Principle('Hello', 'Thani')
+])
+
+function printNames(people: Person[]) {
+    for (let person of people) 
+        console.log(person.fullName);
+}
+
+// Abstract classes and Methods
+
+abstract class Shape {
+    constructor (public color: string) {}
+
+    // Methods with no implementation
+    // abstract render() {} Error: It should not have implementation
+    // abstract render(); Error: any type return
+    abstract render(): void;
+    // Abstract methods only can be defined inside the abstract class
+}
+
+class Circle extends Shape {
+    constructor(public radius: string, color: string) {
+        super(color);
+    }
+    
+    override render(): void {
+        console.log('Rndering a Circle');
+    }
+}
+
+// let shape = new Shape('red');
+// shape.render(); // It doesn't make sense to render a shape -> Use Abstract classes and methods
+// If you want to stop from being creating an instance of the Shape class, we use Abstract
+// We are telling the TS compiler that this class is abstract and an another class should extend it
+// Abstract classes is like uncooked meal -> Not ready, another class shoudl extend it.
+
+// Interfaces -> another building block ->to define the shape of objects
+
+// abstract class Calender {
+//     constructor(public name: string) {}
+
+//     abstract addEvent(): void;
+//     abstract removeEvent(): void; // These methods will not have implementation, it is dependent on type of calender
+//     // When we compile our code, in JS there is no abstract, it is purely TS concept
+// }
+
+// Using interface, we can say that all of our calenders should have name and methods properties
+interface Calender {
+    name: string;
+    addEvent(): void;
+    removeEvent(): void;
+    // When we compile our code, there will be nothing in JS
+}
+
+interface CloudCalender extends Calender {
+    sync(): void;
+}
+
+class GoogleCalender implements Calender {
+    // name: string; Error: Not initialized
+    constructor(public name: string) {} // Manually initialize it
+    addEvent(): void {
+        throw new Error("Method not implemented.");
+    }
+    removeEvent(): void {
+        throw new Error("Method not implemented.");
+    }
+}
+
+/* 
+Abstract or Interface
+In this Eg, the calender class is not providing any logic or any algo that child classes can reuse  
+We only have bunch of methods declarations, In this case, it is better to use interfaces
+But if we have a logic that child classes usese, we should go for abstract classes
+*/ 
+
