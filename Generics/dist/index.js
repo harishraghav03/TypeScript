@@ -41,6 +41,9 @@ let numbers = ArrayUtils.wrapInArray(1);
 function fetch(url) {
     return { data: null, error: null };
 }
+// interface Product {
+//     title: string;
+// }
 let result = fetch('url');
 (_a = result.data) === null || _a === void 0 ? void 0 : _a.username;
 // Generic Constraints
@@ -72,26 +75,25 @@ function echo(value) {
 echo(new Person('a'));
 class Store {
     constructor() {
-        this._objects = []; // Error: Not initialized, so we not gonna create a constructor and it doesn't really make
+        this._objects = [];
     }
-    // sense to create new instance of the class and give it an empty array -> Unnecessary, we will 
-    // give the responsibility to the call itself
     add(obj) {
         this._objects.push(obj);
     }
-}
-// class CompressibleStore extends Store<T> {
-//     Here the compiler doesn't know what T represents here
-// }
-// Passing the generic type parameter
-class CompressibleStore extends Store {
-    compress() { }
-}
-let store = new CompressibleStore(); // Whatever we pass a generic here will be used as in the above class
-store.compress();
-// The generic type parameter in the base class will be used in child class
-class SearchableStore extends Store {
-    find(name) {
-        return this._objects.find(obj => obj.name === name); // Error: name does not exist on type T and you should extend it
+    // T is product 
+    // keyof T => 'name' | 'price' (returns)
+    find(property, value) {
+        return this._objects.find(obj => obj[property] === value); // While we using [] syntax the compiler things that
+        // we are using a index signature property -> We use this to dynamically add the properties to an object
+        // Change string to keyof T in property
     }
 }
+let store = new Store();
+store.add({ name: 'a', price: 1 });
+store.find('name', 'a');
+store.find('price', 1);
+let product = {
+    name: 'a',
+    price: 1
+};
+// Navigate to Utility Types

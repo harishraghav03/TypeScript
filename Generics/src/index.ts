@@ -200,13 +200,39 @@ interface Prodcut {
 // Now we gonna create a type based on the existing-type, add the properties dynamically and make them read-only
 // We cannot use interface
 
-type ReadOnlyProdcut = {
+// type ReadOnlyProdcut = {
     // Instead of hard coding the properties here
     // IndexSignature -> Dynamically add properties
     // keyof -> dynamically get the propertie of product type
 
-    readonly [K in keyof Prodcut]: Prodcut[K]  // We can make readonly in one go -> Type Mapping
+//     readonly [K in keyof Prodcut]: Prodcut[K]  // We can make readonly in one go -> Type Mapping
     
+// }
+
+// let product: ReadOnlyProdcut = {
+//     name: 'a',
+//     price: 1
+// }
+
+// product.name = 'a'; // Compilation Error
+
+// Nxt-Lvl -> Why just product? What if we need another type of readonly object -> Generic Type
+
+type ReadOnly<T> = {
+    readonly [K in keyof T]: T[K]  
 }
 
-let product
+type Optional <T> = {
+    [K in keyof T]?: T[K]
+}
+
+type Nullable <T> = {
+    [K in keyof T]: T[K] | null;
+}
+
+let product: ReadOnly<Prodcut> = {
+    name: 'a',
+    price: 1
+}
+
+// Navigate to Utility Types
