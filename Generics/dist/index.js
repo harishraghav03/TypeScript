@@ -70,4 +70,28 @@ function echo(value) {
     return value;
 }
 echo(new Person('a'));
-// Extending Generic classes
+class Store {
+    constructor() {
+        this._objects = []; // Error: Not initialized, so we not gonna create a constructor and it doesn't really make
+    }
+    // sense to create new instance of the class and give it an empty array -> Unnecessary, we will 
+    // give the responsibility to the call itself
+    add(obj) {
+        this._objects.push(obj);
+    }
+}
+// class CompressibleStore extends Store<T> {
+//     Here the compiler doesn't know what T represents here
+// }
+// Passing the generic type parameter
+class CompressibleStore extends Store {
+    compress() { }
+}
+let store = new CompressibleStore(); // Whatever we pass a generic here will be used as in the above class
+store.compress();
+// The generic type parameter in the base class will be used in child class
+class SearchableStore extends Store {
+    find(name) {
+        return this._objects.find(obj => obj.name === name); // Error: name does not exist on type T and you should extend it
+    }
+}

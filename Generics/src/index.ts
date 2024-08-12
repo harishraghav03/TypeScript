@@ -65,9 +65,9 @@ interface User {
     username: string;
 }
 
-interface Product {
-    title: string;
-}
+// interface Product {
+//     title: string;
+// }
 
 let result = fetch<User>('url');
 result.data?.username;
@@ -111,21 +111,96 @@ echo(new Person('a'));
 
 // Extending Generic classes
 
+// interface Product {
+//     name: string;
+//     price: number;
+// }
+
+// class Store<T> {
+//     protected _objects: T[] = []; // Error: Not initialized, so we not gonna create a constructor and it doesn't really make
+//     // sense to create new instance of the class and give it an empty array -> Unnecessary, we will 
+//     // give the responsibility to the call itself
+
+//     add(obj: T): void {
+//         this._objects.push(obj);
+//     }
+// }
+
+// class CompressibleStore extends Store<T> {
+//     Here the compiler doesn't know what T represents here
+// }
+
+// Passing the generic type parameter
+// class CompressibleStore<T> extends Store<T> {
+//     compress() {}
+// }
+
+// let store = new CompressibleStore<Product>() // Whatever we pass a generic here will be used as in the above class
+// store.compress();
+// The generic type parameter in the base class will be used in child class
+
+// Restrict the generic type parameter
+// class SearchableStore<T extends { name: string }> extends Store <T> {
+//     find(name: string): T | undefined {
+//         return this._objects.find(obj => obj.name === name); // Error: name does not exist on type T and you should extend it
+//     }
+// }
+
+// Fixing the generic type parameter
+// class ProductStore extends Store<Product> {
+//     filterByCategory(category: string): Product[] {
+//         return [];
+//     }
+// }
+
+// keyof operator
+
 interface Product {
     name: string;
     price: number;
 }
 
 class Store<T> {
-    private _objects: T[] = []; // Error: Not initialized, so we not gonna create a constructor and it doesn't really make
-    // sense to create new instance of the class and give it an empty array -> Unnecessary, we will 
-    // give the responsibility to the call itself
+    protected _objects: T[] = []; 
 
     add(obj: T): void {
         this._objects.push(obj);
     }
+
+    // T is product 
+    // keyof T => 'name' | 'price' (returns)
+
+    find(property: keyof T, value: unknown): T | undefined {
+        return this._objects.find(obj => obj[property] === value); // While we using [] syntax the compiler things that
+        // we are using a index signature property -> We use this to dynamically add the properties to an object
+        // Change string to keyof T in property
+    }
 }
 
-class CompressibleStore extends Store<T> {
-    
+let store = new Store<Product>();
+store.add({ name: 'a', price: 1 });
+store.find('name', 'a');
+store.find('price', 1);
+// What if we are searching a non-existing property -> keyof
+
+// Type Mapping
+
+interface Prodcut {
+    name: string;
+    price: number;
+} // I need products with read-only properties
+
+// One option is duplicate
+
+// interface ReadOnlyProdcut {
+//     readonly name: string; // Not recommended
+//     readonly price: number;
+// }
+
+// Now we gonna create a type based on the existing-type, add the properties dynamically and make them read-only
+// We cannot use interface
+
+type ReadOnlyProdcut = {
+    // IndexSignature
+    // keyof
 }
