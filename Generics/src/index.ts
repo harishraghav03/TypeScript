@@ -201,6 +201,12 @@ interface Prodcut {
 // We cannot use interface
 
 type ReadOnlyProdcut = {
-    // IndexSignature
-    // keyof
+    // Instead of hard coding the properties here
+    // IndexSignature -> Dynamically add properties
+    // keyof -> dynamically get the propertie of product type
+
+    readonly [K in keyof Prodcut]: Prodcut[K]  // We can make readonly in one go -> Type Mapping
+    
 }
+
+let product
