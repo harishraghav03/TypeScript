@@ -101,16 +101,63 @@ their standards and implementation features might change in the future
 // }
 
 function Log(target: any, methodName: string, descriptor: PropertyDescriptor) { // Refer Website 
-    descriptor.value = function() {
+    // const original = descriptor.value;
+    const original = descriptor.value as Function;
+    descriptor.value = function(...args: any) { // Using rest operator, we allow this function to take varying no of parameters
         console.log('Before');
-
+        // Here, we gonna call the original method, before we gonna get the reference to the original method
+        // We don't get any intellisense here, because the type of value is any
+        // Here we need to use type assertion, and tell the ts compiler it is a function
+        original.call(this, ...args); // Spread Operator // we can also hard code here withour parameter in the function
         console.log('After');
-        
+        // Note that we are using function expression not arrow function, if we use arrow we have a compilation error
+        // in this beacuse arroe functions don't define their own this keyword, so we cannot use them as methods in the class
+        // When redefining methods we always use function expression
     }
 }
+// class Person {
+//     @Log
+//     say(message: string) {
+//         console.log('Person say ' + message);    
+//     }
+// }
+
+// let person = new Person();
+// person.say('Hello'); // This value will not be displayed, instead it will print the Blue Sky
+// Now after having the parameter it will display the Hello
+// With this implementaion, we can apply only in methods with this signature descriptor.value = function(message: string) -> Not flexible
+
+// Assessor Decorators
+
+// Decorators on Getters and Setters
+
+// Access decorators are similar to method decorators
+function Capitalize(target: any, methodName: string, descriptor: PropertyDescriptor) {
+    // const original = descriptor.value; // It doesn't work for getters and setters 
+    const original = descriptor.get;
+    descriptor.get = function () { // Getters cannot have any arguments
+        const result = original!.call(this); // Original maybe undefined (?), but I know that is not gonna be null or undefined to the compiler
+        // if (original !== null && original !== undefined)
+        //     original.call(this); Longhand for that call method
+
+        // result is of type any
+        // if (typeof result === 'string')
+        //     return result.toUpperCase();
+        // return result; Optimize
+        return (typeof result === 'string') ? result.toUpperCase() : result;
+
+    }
+}
+
 class Person {
-    @Log
-    say(message) {
-        console.log('Person say ' + message);    
+    constructor(public firstName: string, public lastName: string) {}
+
+    @Capitalize
+    get fullName() {
+        return `${this.firstName} ${this.lastName}`; // Even if we return null or 0 it will print
     }
-}
+ }
+
+ let person = new Person('harish', 'raghav');
+ console.log(person.fullName); 
+ 
