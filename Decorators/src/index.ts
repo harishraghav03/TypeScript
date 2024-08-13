@@ -160,4 +160,61 @@ class Person {
 
  let person = new Person('harish', 'raghav');
  console.log(person.fullName); 
+
+ // Property Decorators -> similar to method decorators
+
+ function MinLength(length: number) {
+    // Here we don't have propertyDescriptor, instead we gonna define the propertydescriptor for the target property
+    return (target: any, propertyName: string) => {
+
+        let value: string;
+
+        const descriptor: PropertyDescriptor = {
+            get() { return value },
+            set(newValue: string) {
+                if (newValue.length < length) // Data Validation Logic
+                    throw new Error(`${propertyName} should be atleast ${length}`);
+                value = newValue;
+            }
+        };
+
+        // Now we have the descriptor object, then we gonna assign it to the target property
+        Object.defineProperty(target, propertyName, descriptor);
+    }
+ }
+
+ class User {
+    @MinLength(4)
+    password: string;
+
+    constructor(password: string) { // We cannot use public here as we are implementing a decorator
+        this.password = password;
+    }
+ }
  
+let user = new User('1234');
+// user.password = '1'; If we try to reset it will throw an error
+// console.log(user.password);
+
+// Parameter Decorators -> Not often used, mostly used in framework designing
+
+type WatchedParameter = {
+    methodName: string, 
+    parameterIndex: number
+}
+
+let watchedParameters: WatchedParameter[] = [];
+
+function Watch(target: any, methodName: string, parameterIndex: number) {
+    watchedParameters.push({
+        methodName,
+        parameterIndex
+    });
+}
+
+console.log(watchedParameters);
+
+
+class Vehicle {
+    move(@Watch speed: number) {}
+}
