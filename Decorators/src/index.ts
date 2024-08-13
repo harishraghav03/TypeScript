@@ -22,9 +22,95 @@ their standards and implementation features might change in the future
 //     constructor.prototype.insertInDOM = () => {
 //         console.log('Inserting Component in the DOM');
 //     }
-// } We can also solve this using inheritance
+// } // We can also solve this using inheritance
 
 // @Component
 // class ProfileComponent {
 // }
 
+// class Component {
+//     insertInDOM() {}
+// }
+
+// class ProfileComponent extends Component {
+// }
+
+// Parameterized Decorators
+
+// type ComponentOptions = {
+//     selectors: string
+// }
+
+// // Decorator Factory
+// function Component(options: ComponentOptions) {
+//     return (constructor: Function) => {
+//         console.log('Component Decorator called');
+//         constructor.prototype.options = options;
+//         constructor.prototype.uniqueId = Date.now();
+//         constructor.prototype.insertInDOM = () => {
+//             console.log('Inserting Component in the DOM');
+//         }
+//     } 
+// }
+
+// @Component({ selectors: '#my-profile' }) // It is going to be id of an element in the dom
+// class ProfileComponent {
+// }
+
+// Decorator Composition
+
+// type ComponentOptions = {
+//     selectors: string
+// }
+
+// function Component(options: ComponentOptions) {
+//     return (constructor: Function) => {
+//         console.log('Component Decorator called');
+//         constructor.prototype.options = options;
+//         constructor.prototype.uniqueId = Date.now();
+//         constructor.prototype.insertInDOM = () => {
+//             console.log('Inserting Component in the DOM');
+//         }
+//     } 
+// }
+
+// function Pipe(constructor: Function) {
+//     console.log('Pipe Decorator Called');
+//     constructor.prototype.pipe = true;
+// }
+
+// @Component({ selectors: '#my-profile' })
+// @Pipe
+// class ProfileComponent {
+// }
+
+// Pipe Decorator Called
+// Component Decorator called
+
+// Method Decorators
+
+// Instead of constructor, we need 3 parameters
+// 1 -> Object that owns the target method -> any is the type that the compiler expects from us
+// 2 -> Name of the target method
+// 3 -> Descriptor object for the target method
+// function Log(target: any, methodName: string, descriptor: PropertyDescriptor) { // Refer Website 
+//     descriptor.value = function() {
+//         // console.log('New Implementation'); // This method gonna replay the say method
+//         // It is an option, we don't wanna do this instead we can enhance our function 
+//     }
+// }
+
+function Log(target: any, methodName: string, descriptor: PropertyDescriptor) { // Refer Website 
+    descriptor.value = function() {
+        console.log('Before');
+
+        console.log('After');
+        
+    }
+}
+class Person {
+    @Log
+    say(message) {
+        console.log('Person say ' + message);    
+    }
+}
