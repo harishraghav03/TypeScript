@@ -1,0 +1,1 @@
+import { calculateTax } from './tax'; // Compilation Error -> allowJS in TSconfig -> true
