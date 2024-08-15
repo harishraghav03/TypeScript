@@ -28,4 +28,4 @@ parameter is of type any it does not throw any error and outputs NaN */
 // npm i --save-dev or -D @types/lodash Only for Compile time
 
 import * as _ from 'lodash';
-_.clone
+_.clone([1, 2, 3]);
