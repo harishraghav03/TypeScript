@@ -11,7 +11,7 @@ function ReminderList({items}: RemainderListProps) {
     return (
         // We return unordered lists and then map each item in the lists of remainders to the list item
         <ul>
-            {items.map(item => <li key={item.id}>key={item.title}</li>)}
+            {items.map(item => <li key={item.id}>{item.title}</li>)}
         </ul>
     );
 }

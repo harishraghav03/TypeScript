@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ReminderList from './components/ReminderList';
@@ -10,6 +10,9 @@ const reminders: Remainder[] = [
 ];
 
 function App() {
+  // To properly store remainders in that component -> Generic (The object we wanna store)
+  const [reminders, setReminders] = useState<Remainder[]>() 
+
   return (
     <div className="App">
       <ReminderList items={reminders} />
