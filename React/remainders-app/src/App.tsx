@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ReminderList from './components/ReminderList';
 import Remainder from './models/remainder';
 import reminderService from './services/remainder';
-import remainder from './services/remainder';
+import NewReminder from './components/NewReminder';
 
 function App() {
   // To properly store remainders in that component -> Generic (The object we wanna store)
@@ -15,13 +14,24 @@ function App() {
   }, []);
 
   const loadReminders = async () => {
-    const remainder = await reminderService.getRemainders();
-    setReminders(remainder);
+    const reminder = await reminderService.getRemainders();
+    setReminders(reminder);
+  }
+
+  const removeReminder = (id: number) => {
+    setReminders(reminders.filter(reminder => reminder.id !== id));
+  }
+
+  const addReminder = async (title: string) => {
+    const newReminder = await reminderService.addRemainder(title);
+    setReminders([newReminder, ... reminders]);
+    
   }
 
   return (
     <div className="App">
-      <ReminderList items={reminders} />
+      <NewReminder onAddReminder={addReminder} />
+      <ReminderList items={reminders} onRemoveRemainder={removeReminder}/>
     </div>
   );
 }
