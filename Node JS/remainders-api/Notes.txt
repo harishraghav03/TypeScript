@@ -1,0 +1,11 @@
+npm init -y
+
+ts-node index.ts
+
+npm i express
+npm i -D typescript @types/node @types/express
+
+npm i -D nodemon
+
+Now the latest version of nodemon also supports ts-node 
+Nodemon will talk to ts-node and compiler our code
